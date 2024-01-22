@@ -11,6 +11,8 @@ bool isFunction(const string& word) {
 }
 
 int main() {
+    int func_count = 0;
+    int keyword_count = 0;
      unordered_set<string> keywords = {
         "alignas", "alignof", "and", "and_eq", "asm", "auto", "bitand", "bitor",
         "bool", "break", "case", "catch", "char", "char16_t", "char32_t", "class",
@@ -37,8 +39,10 @@ int main() {
             while (iss >> word) {
                 cout << word << " ";
                 if (keywords.find(word) != keywords.end()) {
+                    keyword_count++;
                     cout << " (C++ keyword)" << endl;
                 } else if (isFunction(word)) {
+                    func_count++;
                     cout << " (C++ function)" << endl;
                 }
 
@@ -53,7 +57,9 @@ int main() {
         cout << "\nFile copied successfully." << endl;
         cout << "Tushar Bhatia" << endl;
         cout << "A2305221202" << endl;
-        cout << "Word count: " << wordCount << endl;
+        cout << "Total count: " << wordCount << endl;
+        cout<< "Total functions: " << func_count << endl;
+        cout << "Total keywords: " << keyword_count << endl;
     } else {
         cout << "Failed to open the files." << endl;
     }
