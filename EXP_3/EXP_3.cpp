@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <string>
 #include <unordered_set>
 
@@ -10,7 +11,7 @@ bool isFunction(const string& word) {
 }
 
 int main() {
-    unordered_set<string> keywords = {
+     unordered_set<string> keywords = {
         "alignas", "alignof", "and", "and_eq", "asm", "auto", "bitand", "bitor",
         "bool", "break", "case", "catch", "char", "char16_t", "char32_t", "class",
         "compl", "const", "constexpr", "const_cast", "continue", "decltype", "default",
@@ -29,17 +30,21 @@ int main() {
     int wordCount = 0;
 
     if (inputFile.is_open() && outputFile.is_open()) {
-        string word;
-        while (inputFile >> word) {
-            cout << word << " ";
-            if (keywords.find(word) != keywords.end()) {
-                cout << " (C++ keyword)";
-            } else if (isFunction(word)) {
-                cout << " (C++ function)";
-            }
+        string line;
+        while (getline(inputFile, line, ',')) {
+            istringstream iss(line);
+            string word;
+            while (iss >> word) {
+                cout << word << " ";
+                if (keywords.find(word) != keywords.end()) {
+                    cout << " (C++ keyword)" << endl;
+                } else if (isFunction(word)) {
+                    cout << " (C++ function)" << endl;
+                }
 
-            outputFile << word << " ";
-            wordCount++;
+                outputFile << word << " ";
+                wordCount++;
+            }
         }
 
         inputFile.close();
