@@ -10,9 +10,21 @@ bool isFunction(const string& word) {
     return word.find('(') != string::npos;
 }
 
+bool isMultComment(const string& word)
+{
+   return word.find("/*")!=string::npos;
+}
+bool isComment(const string& word)
+{
+    return word.find("//")!=string::npos;
+}
+
 int main() {
     int func_count = 0;
     int keyword_count = 0;
+    int comment_count=0;
+    int lit_count=0;
+    bool multi_comment=0;
      unordered_set<string> keywords = {
         "alignas", "alignof", "and", "and_eq", "asm", "auto", "bitand", "bitor",
         "bool", "break", "case", "catch", "char", "char16_t", "char32_t", "class",
@@ -33,7 +45,7 @@ int main() {
 
     if (inputFile.is_open() && outputFile.is_open()) {
         string line;
-        while (getline(inputFile, line, ',')) {
+        while (getline(inputFile, line, ';')) {
             istringstream iss(line);
             string word;
             while (iss >> word) {
@@ -45,8 +57,39 @@ int main() {
                     func_count++;
                     cout << " (C++ function)" << endl;
                 }
-
-                outputFile << word << " ";
+                else if(isComment(word))
+                {
+                   // if(multi_comment==1)
+                    {
+                   //     cout<<"(C++ Multi-line comment)";
+                     //   if(word.find("*/")!=string::npos)
+                       // {
+                         //   cout<<"(C++ Comment Closed)";
+                           // multi_comment=0;
+                        //}
+                    }
+                    comment_count++;
+                    cout<< " (C++ Comment)"<<endl;
+                }
+                else if(isMultComment(word))
+                {
+                    cout<<"(C++ Multi-line comment)"<<endl;
+                    multi_comment=true;
+                }
+                if(multi_comment==true)
+                {
+                    cout<<"Inside Multiple Comments"<<endl;
+                    if(word.find("*/")!=string::npos)
+                    {
+                        cout<<"C++ MULTI-COMMENT CLOSED"<<endl;
+                        multi_comment=false;
+                        continue;
+                    }
+                }
+                if(!isComment(word) && !isMultComment(word) && !multi_comment)
+                {      
+                        outputFile<<word<<"\n";
+                }
                 wordCount++;
             }
         }
@@ -60,6 +103,7 @@ int main() {
         cout << "Total count: " << wordCount << endl;
         cout<< "Total functions: " << func_count << endl;
         cout << "Total keywords: " << keyword_count << endl;
+        cout << "Total comments: " << comment_count << endl;
     } else {
         cout << "Failed to open the files." << endl;
     }
