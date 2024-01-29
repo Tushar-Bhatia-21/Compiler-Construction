@@ -19,6 +19,14 @@ bool isComment(const string& word)
     return word.find("//")!=string::npos;
 }
 
+bool isLiteral(const string& word) {
+    return isdigit(word[0]);
+     if (word.size() >= 3 && word[0] == '\'' && word[2] == '\'') {
+        return true;
+    }
+}
+
+
 int main() {
     int func_count = 0;
     int keyword_count = 0;
@@ -59,15 +67,6 @@ int main() {
                 }
                 else if(isComment(word))
                 {
-                   // if(multi_comment==1)
-                    {
-                   //     cout<<"(C++ Multi-line comment)";
-                     //   if(word.find("*/")!=string::npos)
-                       // {
-                         //   cout<<"(C++ Comment Closed)";
-                           // multi_comment=0;
-                        //}
-                    }
                     comment_count++;
                     cout<< " (C++ Comment)"<<endl;
                 }
@@ -87,7 +86,11 @@ int main() {
                     }
                 }
                 if(!isComment(word) && !isMultComment(word) && !multi_comment)
-                {      
+                {   if(isLiteral(word))
+                    {
+                        lit_count++;
+                        cout<<" (C++ Literal)"<<endl;
+                    }      
                         outputFile<<word<<"\n";
                 }
                 wordCount++;
@@ -104,6 +107,7 @@ int main() {
         cout<< "Total functions: " << func_count << endl;
         cout << "Total keywords: " << keyword_count << endl;
         cout << "Total comments: " << comment_count << endl;
+        cout<<"Total Literals: "<<lit_count<<endl;
     } else {
         cout << "Failed to open the files." << endl;
     }

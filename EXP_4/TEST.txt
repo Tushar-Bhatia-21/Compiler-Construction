@@ -1,0 +1,5 @@
+int();int;bool;123;float;
+/*
+       int
+*/
+int;
