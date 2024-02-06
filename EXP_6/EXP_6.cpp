@@ -1,5 +1,4 @@
 #include <iostream>
-#include <fstream>
 #include <string>
 using namespace std;
 
@@ -33,47 +32,59 @@ int main()
     }
     cout << "Production Rule: " << input << endl;
 
-    for (int i = 0, k = 3; i < input.size(); i++)
+    // Left Recursion Removal
+    for (int i = 3; i < input.size(); i++)
     {
         if (input[i] == input[0])
         {
             cout << "Left Recursion Detected" << endl;
             if (input[i] != '#')
             {
-                for (int l = k + 1; l < k + size[i]; l++)
+                for (int l = i + 1; l < i + size[i] - 1; l++)
                 {
                     op2.push_back(input[l]);
                 }
-                k += size[i] + 1;
                 op2.push_back(input[0]);
                 op2 += "\'|";
             }
             else
             {
-                int j=0;
                 cout << "Production " << i + 1 << " does not have left recursion" << endl;
-                if (input[i] != '#')
-                {
-                    for (j = k; j < k + size[i]; j++)
-                    {
-                        op2.push_back(input[j]);
-                    }
-                    k = j + 1;
-                    op2.push_back(input[0]);
-                    op2 += "\'|";
-                }
-                else
-                {
-                    op2.push_back(input[0]);
-                    op2 += "\'";
-                }
+                op2.push_back(input[0]);
+                op2 += "\'";
             }
         }
     }
+  // Left Factoring
+    string factoredInput = input;
+    for (int i = 3; i < input.size(); i++)
+    {
+        // Check for common prefixes among alternative productions
+        int commonPrefixLength = 0;
+        while (i + commonPrefixLength < input.size() && input[i + commonPrefixLength] == input[i - 3 + commonPrefixLength])
+        {
+            commonPrefixLength++;
+        }
+
+        // If there is a common prefix, factor it out
+        if (commonPrefixLength > 0)
+        {
+            string newNonTerminal = input.substr(i, commonPrefixLength);
+            factoredInput.replace(i - 3, commonPrefixLength, newNonTerminal);
+            op1 += newNonTerminal + "\'";
+            i += newNonTerminal.size() - 1;
+        }
+    }
+
+
+
+
+    // Left Factoring
+    cout << "After Left Recursion Removal: " << op2 << endl;
     op1 += "#";
-    cout << op2 << endl;
-    cout << op1 << endl;
-    cout<<"Tushar Bhatia"<<endl;
-    cout<<"A2305221202"<<endl;
+    cout << "After Left Factoring: " << op1 << endl;
+
+    cout << "Tushar Bhatia" << endl;
+    cout << "A2305221202" << endl;
     return 0;
 }
