@@ -1,79 +1,62 @@
-#include <iostream>
-#include <fstream>
-#include <string>
+#include<iostream>
+#include<string>
 using namespace std;
-
-#define MAX 100
-
 int main()
-{
-    int n;
-    string input, op1, op2, temp;
-    int size[MAX] = {};
-
+{  
+    cout<<"Tushar Bhatia"<<endl;
+    cout<<"A2305221202"<<endl;
+    string ip,op1,op2,temp;
+    int sizes[10] = {};
     char c;
-    cout << "Enter the Parent Non-Terminal: " << endl;
-    cin >> c;
-    input.push_back(c);
-    op1 += input + "\'->";
-    input += "->";
-    op2 += input;
-    cout << "Enter the number of productions: " << endl;
-    cin >> n;
-    for (int i = 0; i < n; i++)
-    {
-        cout << "Enter the production " << i + 1 << ":" << endl;
-        cin >> temp;
-        size[i] = temp.size();
-        input += temp;
-        if (i != n - 1)
-        {
-            input += "|";
-        }
+    int n,j,l;
+    cout<<"Enter the Parent Non-Terminal : ";
+    cin>>c;
+    ip.push_back(c);
+    op1 += ip + "\'->";
+    ip += "->";
+    op2+=ip;
+    cout<<"Enter the number of productions : ";
+    cin>>n;
+    for(int i=0;i<n;i++)
+    {   cout<<"Enter Production "<<i+1<<" : ";
+        cin>>temp;
+        sizes[i] = temp.size();
+        ip+=temp;
+        if(i!=n-1)
+            ip += "|";
     }
-    cout << "Production Rule: " << input << endl;
-
-    for (int i = 0, k = 3; i < input.size(); i++)
+    cout<<"Production Rule : "<<ip<<endl;
+    for(int i=0,k=3;i<n;i++)
     {
-        if (input[i] == input[0])
+        if(ip[0] == ip[k])
         {
-            cout << "Left Recursion Detected" << endl;
-            if (input[i] != '#')
+            cout<<"Production "<<i+1<<" has left recursion."<<endl;
+            if(ip[k] != '#')
             {
-                for (int l = k + 1; l < k + size[i]; l++)
-                {
-                    op2.push_back(input[l]);
-                }
-                k += size[i] + 1;
-                op2.push_back(input[0]);
+                for(l=k+1;l<k+sizes[i];l++)
+                    op1.push_back(ip[l]);
+                k=l+1;
+                op1.push_back(ip[0]);
+                op1 += "\'|";
+            }
+        }
+        else
+        {
+            cout<<"Production "<<i+1<<" does not have left recursion."<<endl;
+            if(ip[k] != '#')
+            {
+                for(j=k;j<k+sizes[i];j++)
+                    op2.push_back(ip[j]);
+                k=j+1;
+                op2.push_back(ip[0]);
                 op2 += "\'|";
             }
             else
             {
-                int j=0;
-                cout << "Production " << i + 1 << " does not have left recursion" << endl;
-                if (input[i] != '#')
-                {
-                    for (j = k; j < k + size[i]; j++)
-                    {
-                        op2.push_back(input[j]);
-                    }
-                    k = j + 1;
-                    op2.push_back(input[0]);
-                    op2 += "\'|";
-                }
-                else
-                {
-                    op2.push_back(input[0]);
-                    op2 += "\'";
-                }
-            }
-        }
-    }
+                op2.push_back(ip[0]);
+                op2 += "\'";
+            }}}
     op1 += "#";
-    cout << op2 << endl;
-    cout << op1 << endl;
-    cout<<"Tushar Bhatia"<<endl;
-    cout<<"A2305221202"<<endl;
-    return 0;
-}
+    cout<<op2<<endl;
+    cout<<op1<<endl;
+    return 0;}
