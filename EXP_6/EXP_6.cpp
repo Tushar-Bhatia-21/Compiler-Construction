@@ -1,90 +1,57 @@
-#include <iostream>
-#include <string>
+#include<iostream>
+#include<string>
+#include<vector>
 using namespace std;
 
-#define MAX 100
+void removeLeftFactoring(string production) {
+    char nonTerminal = production[0];
+    int pipeLoc = production.find('|');
 
-int main()
-{
-    int n;
-    string input, op1, op2, temp;
-    int size[MAX] = {};
+    string firstHalf = production.substr(3, pipeLoc - 3);
+    string secondHalf = production.substr(pipeLoc + 1);
 
-    char c;
-    cout << "Enter the Parent Non-Terminal: " << endl;
-    cin >> c;
-    input.push_back(c);
-    op1 += input + "\'->";
-    input += "->";
-    op2 += input;
-    cout << "Enter the number of productions: " << endl;
-    cin >> n;
-    for (int i = 0; i < n; i++)
-    {
-        cout << "Enter the production " << i + 1 << ":" << endl;
-        cin >> temp;
-        size[i] = temp.size();
-        input += temp;
-        if (i != n - 1)
-        {
-            input += "|";
-        }
-    }
-    cout << "Production Rule: " << input << endl;
-
-    // Left Recursion Removal
-    for (int i = 3; i < input.size(); i++)
-    {
-        if (input[i] == input[0])
-        {
-            cout << "Left Recursion Detected" << endl;
-            if (input[i] != '#')
-            {
-                for (int l = i + 1; l < i + size[i] - 1; l++)
-                {
-                    op2.push_back(input[l]);
-                }
-                op2.push_back(input[0]);
-                op2 += "\'|";
-            }
-            else
-            {
-                cout << "Production " << i + 1 << " does not have left recursion" << endl;
-                op2.push_back(input[0]);
-                op2 += "\'";
-            }
-        }
-    }
-  // Left Factoring
-    string factoredInput = input;
-    for (int i = 3; i < input.size(); i++)
-    {
-        // Check for common prefixes among alternative productions
-        int commonPrefixLength = 0;
-        while (i + commonPrefixLength < input.size() && input[i + commonPrefixLength] == input[i - 3 + commonPrefixLength])
-        {
-            commonPrefixLength++;
-        }
-
-        // If there is a common prefix, factor it out
-        if (commonPrefixLength > 0)
-        {
-            string newNonTerminal = input.substr(i, commonPrefixLength);
-            factoredInput.replace(i - 3, commonPrefixLength, newNonTerminal);
-            op1 += newNonTerminal + "\'";
-            i += newNonTerminal.size() - 1;
-        }
+    string alpha = "";
+    int x = 0;
+    while (firstHalf[x] == secondHalf[x]) {
+        alpha += firstHalf[x];
+        x++;
     }
 
+    if (alpha.empty()) {
+        cout << "Left Factoring not present." << endl;
+        return;
+    }
 
+    string beta = (x < firstHalf.size()) ? firstHalf.substr(x) : "";
+    string gamma = (x < secondHalf.size()) ? secondHalf.substr(x) : "";
 
+    cout << "Production after removal of Left Factoring: " << endl;
+    cout << nonTerminal << "  -> " << alpha << nonTerminal << "'" << endl;
+    cout << nonTerminal << "' -> " << (beta.empty() ? "$" : beta) << "|" << (gamma.empty() ? "$" : gamma) << endl;
+}
 
-    // Left Factoring
-    cout << "After Left Recursion Removal: " << op2 << endl;
-    op1 += "#";
-    cout << "After Left Factoring: " << op1 << endl;
-
+int main() {  
     cout << "Tushar Bhatia" << endl;
     cout << "A2305221202" << endl;
+    
+    string ip, temp;
+    int n;
+    cout << "Enter the Parent Non-Terminal : ";
+    cin >> ip;
+    ip += "->";
+
+    cout << "Enter the number of productions : ";
+    cin >> n;
+    for(int i = 0; i < n; i++) {
+        cout << "Enter Production " << i + 1 << " : ";
+        cin >> temp;
+        ip += temp;
+        if (i != n - 1)
+            ip += "|";
+    }
+
+    cout << "Production Rule : " << ip << endl;
+    removeLeftFactoring(ip);
+
     return 0;
 }
