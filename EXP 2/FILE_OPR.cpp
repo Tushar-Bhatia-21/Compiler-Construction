@@ -20,7 +20,9 @@ int main() {
         inputFile.close();
         outputFile.close();
         cout << "File copied successfully." << endl;
-        cout<<ctr;
+        cout<<"Tushar Bhatia"<<endl;
+        cout<<"A2305221202"<<endl;
+        cout<<ctr+1<<endl;
     }
     else 
     {

@@ -1,4 +1,4 @@
-int();int;bool;123;float;
+int();int a;bool;123;float;
 /*
        int
 */

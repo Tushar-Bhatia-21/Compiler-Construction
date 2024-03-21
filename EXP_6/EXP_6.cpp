@@ -3,6 +3,21 @@
 #include<vector>
 using namespace std;
 
+
+void first(string production) {
+    char nonTerminal = production[0];
+    int pipeLoc = production.find('|');
+    string firstHalf = production.substr(3, pipeLoc - 3);
+    string secondHalf = production.substr(pipeLoc + 1);
+    string alpha = "";
+    int x = 0;
+    while (firstHalf[x] == secondHalf[x]) {
+        alpha += firstHalf[x];
+        x++;
+    }
+    cout << "First of " << nonTerminal << " is " << alpha << endl;
+}
+
 void removeLeftFactoring(string production) {
     char nonTerminal = production[0];
     int pipeLoc = production.find('|');
@@ -28,7 +43,7 @@ void removeLeftFactoring(string production) {
     cout << "Production after removal of Left Factoring: " << endl;
     cout << nonTerminal << "  -> " << alpha << nonTerminal << "'" << endl;
     cout << nonTerminal << "' -> " << (beta.empty() ? "$" : beta) << "|" << (gamma.empty() ? "$" : gamma) << endl;
-}
+} 
 
 int main() {  
     cout << "Tushar Bhatia" << endl;
@@ -52,6 +67,7 @@ int main() {
 
     cout << "Production Rule : " << ip << endl;
     removeLeftFactoring(ip);
+    first(ip);
 
     return 0;
 }

@@ -57,6 +57,6 @@ int main()
                 op2 += "\'";
             }}}
     op1 += "#";
-    cout<<op2<<endl;
+    cout<<op2<<"E'"<<endl;
     cout<<op1<<endl;
     return 0;}
