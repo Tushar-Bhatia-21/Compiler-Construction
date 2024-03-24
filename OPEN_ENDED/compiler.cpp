@@ -30,9 +30,19 @@ public:
         while (getline(ss, line)) {
             line = trim(line);
             if (!line.empty()) {
-                parse(line);
+                if (check_syntax(line)) {
+                    parse(line);
+                } else {
+                    throw runtime_error("Syntax error in line: " + line);
+                }
             }
         }
+    }
+
+    bool check_syntax(const string& line) {
+        // Implement syntax checking logic here
+        // For simplicity, assume all lines are valid for now
+        return true;
     }
 
     void parse(const string& line) {
@@ -138,9 +148,13 @@ int main() {
 
     // Compile and print the three-address code
     Compiler compiler;
-    compiler.compile(cpp_code);
-    cout << "Three-address code:" << endl;
-    cout << compiler.get_three_address_code();
+    try {
+        compiler.compile(cpp_code);
+        cout << "Three-address code:" << endl;
+        cout << compiler.get_three_address_code();
+    } catch (const runtime_error& e) {
+        cerr << "Error: " << e.what() << endl;
+    }
 
     return 0;
 }
