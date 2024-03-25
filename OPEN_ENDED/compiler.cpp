@@ -103,8 +103,9 @@ public:
     }
 
     string get_three_address_code() {
-        // Output the three-address code
         stringstream ss;
+        // Output the three-address code
+        ss << "START" <<endl;
         for (const string& code : three_address_code) {
             ss << code << endl;
         }
